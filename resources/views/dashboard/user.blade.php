@@ -4,32 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard - Shopify Clone</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        body {
+            background-color: #f7fafc;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            color: white;
+            background-color: #dc3545;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .success {
+            color: green;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
-<body class="bg-gray-100">
-    <div class="container mx-auto p-4">
-        <h1 class="text-3xl font-bold mb-4">User Dashboard</h1>
+<body>
+    <div class="container">
+        @if (session('success'))
+            <div class="success">{{ session('success') }}</div>
+        @endif
+        <h1>User Dashboard</h1>
         <p>Welcome, {{ auth()->user()->name }}! Your store: {{ auth()->user()->store->name }}</p>
-        <form id="logout-form" action="/logout" method="POST">
+        <form action="{{ route('logout') }}" method="POST">
             @csrf
-            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded mt-4">Logout</button>
+            <button type="submit" class="button">Logout</button>
         </form>
     </div>
-
-    <script>
-        document.getElementById('logout-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const response = await fetch('/api/logout', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                },
-            });
-            if (response.ok) {
-                localStorage.removeItem('token');
-                window.location.href = '/';
-            }
-        });
-    </script>
 </body>
 </html>

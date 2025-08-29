@@ -5,19 +5,21 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 Route::get('/register', function () {
     return view('auth.register');
 })->name('register');
 
+Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api')->name('logout');
 
 Route::middleware(['auth:api'])->group(function () {
     Route::get('/dashboard/admin', function () {
