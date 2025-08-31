@@ -21,6 +21,16 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api')->name('logout');
 
+use App\Http\Controllers\StoreController;
+use App\Http\Controllers\ThemeController;
+
+Route::middleware(['auth:api', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('themes', ThemeController::class);
+    Route::resource('stores', StoreController::class);
+    // Add other admin routes here
+});
+
 Route::middleware(['auth:api'])->group(function () {
     Route::get('/dashboard/admin', function () {
         return view('dashboard.admin');
