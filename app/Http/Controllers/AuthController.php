@@ -47,6 +47,9 @@ class AuthController extends Controller
             Log::info('User registered and token stored:', ['user_id' => $user->id, 'role' => $user->role]);
 
             return redirect()->route('login')->with('success', 'Registration successful!');
+        } catch (JWTException $e) {
+            Log::error('Registration failed: Could not create token: ' . $e->getMessage());
+            return redirect()->route('register')->withErrors(['error' => 'Registration failed: Could not create user token.']);
         } catch (\Exception $e) {
             Log::error('Registration failed: ' . $e->getMessage());
             return redirect()->route('register')->withErrors(['error' => 'Registration failed. Please try again.']);
