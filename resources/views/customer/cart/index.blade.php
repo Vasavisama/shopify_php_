@@ -20,11 +20,19 @@
                         <td>{{ $details['name'] }}</td>
                         <td>${{ $details['price'] }}</td>
                         <td>
-                            <form action="{{ route('cart.update', $id) }}" method="POST" class="d-flex">
-                                @csrf
-                                <input type="number" name="quantity" value="{{ $details['quantity'] }}" class="form-control" style="width: 60px;">
-                                <button type="submit" class="btn btn-secondary btn-sm ms-2">Update</button>
-                            </form>
+                            <div class="d-flex align-items-center">
+                                <form action="{{ route('cart.update', $id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <input type="hidden" name="quantity" value="{{ $details['quantity'] - 1 }}">
+                                    <button type="submit" class="btn btn-secondary btn-sm" @if($details['quantity'] <= 1) disabled @endif>-</button>
+                                </form>
+                                <span class="mx-2">{{ $details['quantity'] }}</span>
+                                <form action="{{ route('cart.update', $id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <input type="hidden" name="quantity" value="{{ $details['quantity'] + 1 }}">
+                                    <button type="submit" class="btn btn-secondary btn-sm">+</button>
+                                </form>
+                            </div>
                         </td>
                         <td>${{ $details['price'] * $details['quantity'] }}</td>
                         <td>
@@ -37,8 +45,8 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="text-end">
-            <h3>Total: ${{ $total }}</h3>
+        <div class="text-end mt-4">
+            <h3 class="fw-bold">Total Bill: ${{ number_format($total, 2) }}</h3>
         </div>
     @else
         <p>Your cart is empty.</p>
