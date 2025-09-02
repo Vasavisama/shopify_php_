@@ -94,7 +94,7 @@ class AuthController extends Controller
                 return redirect()->route('admin.dashboard')->with('success', 'Login successful!');
             }
 
-            return redirect()->route('dashboard.user')->with('success', 'Login successful!');
+            return redirect()->route('customer.stores.index')->with('success', 'Login successful!');
         } catch (JWTException $e) {
             Log::error('Login failed: JWT error - ' . $e->getMessage());
             return redirect()->route('login')
