@@ -24,6 +24,15 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api'
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\ThemeController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CartController;
+
+Route::get('/customer/stores', [CustomerController::class, 'index'])->name('customer.stores.index');
+Route::get('/customer/stores/{store}', [CustomerController::class, 'show'])->name('customer.stores.show');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/update/{product}', [CartController::class, 'update'])->name('cart.update');
+Route::post('/cart/remove/{product}', [CartController::class, 'remove'])->name('cart.remove');
 
 Route::middleware(['auth:api', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
