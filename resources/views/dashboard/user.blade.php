@@ -4,48 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard - Shopify Clone</title>
-    <style>
-        body {
-            background-color: #f7fafc;
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        h1 {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            color: white;
-            background-color: #dc3545;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .success {
-            color: green;
-            font-size: 1rem;
-            margin-bottom: 10px;
-        }
-    </style>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <div class="container">
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
         @if (session('success'))
-            <div class="success">{{ session('success') }}</div>
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <span class="block sm:inline">{{ session('success') }}</span>
+            </div>
         @endif
-        <h1>User Dashboard</h1>
-        <p>Welcome, {{ auth()->user()->name }}! Your store: {{ auth()->user()->store->name }}</p>
-        <form action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button type="submit" class="button">Logout</button>
-        </form>
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-bold">User Dashboard</h1>
+                <p class="text-gray-600">Welcome, {{ auth()->user()->name }}! Your store: <strong>{{ auth()->user()->store->name }}</strong></p>
+            </div>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Logout</button>
+            </form>
+        </div>
+
+        <h2 class="text-2xl font-bold my-8">Available Stores</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @forelse ($stores as $store)
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <a href="{{ route('customer.stores.show', $store) }}">
+                        @if($store->logo_path)
+                            <img class="w-full h-48 object-cover" src="{{ asset('storage/' . $store->logo_path) }}" alt="{{ $store->name }} logo">
+                        @else
+                            <div class="w-full h-48 flex items-center justify-center bg-gray-200">
+                                <span class="text-gray-500">No Logo</span>
+                            </div>
+                        @endif
+                        <div class="p-6">
+                            <h4 class="font-bold text-xl mb-2">{{ $store->name }}</h4>
+                            <p class="text-gray-700 text-base">
+                                {{ Str::limit($store->description, 100) ?? 'No description provided.' }}
+                            </p>
+                        </div>
+                    </a>
+                </div>
+            @empty
+                <div class="col-span-full text-center text-gray-500">
+                    <p>No stores found.</p>
+                </div>
+            @endforelse
+        </div>
     </div>
 </body>
 </html>
