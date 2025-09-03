@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Store;
 
 Route::get('/', function () {
     return view('welcome');
@@ -48,6 +49,9 @@ Route::middleware(['auth:api'])->group(function () {
     })->middleware('role:admin')->name('dashboard.admin');
 
     Route::get('/dashboard/user', function () {
-        return view('dashboard.user');
+        $stores = Store::whereHas('user', function ($query) {
+            $query->where('role', 'admin');
+        })->get();
+        return view('dashboard.user', compact('stores'));
     })->middleware('role:user')->name('dashboard.user');
 });
