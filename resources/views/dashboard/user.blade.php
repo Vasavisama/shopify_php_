@@ -27,22 +27,25 @@
         <h2 class="text-2xl font-bold my-8">Available Stores</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @forelse ($stores as $store)
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                    <a href="{{ route('customer.stores.show', $store) }}">
-                        @if($store->logo_path)
-                            <img class="w-full h-48 object-cover" src="{{ asset('storage/' . $store->logo_path) }}" alt="{{ $store->name }} logo">
-                        @else
-                            <div class="w-full h-48 flex items-center justify-center bg-gray-200">
-                                <span class="text-gray-500">No Logo</span>
-                            </div>
-                        @endif
-                        <div class="p-6">
-                            <h4 class="font-bold text-xl mb-2">{{ $store->name }}</h4>
-                            <p class="text-gray-700 text-base">
-                                {{ Str::limit($store->description, 100) ?? 'No description provided.' }}
-                            </p>
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col">
+                    @if($store->logo_path)
+                        <img class="w-full h-48 object-cover" src="{{ asset('storage/' . $store->logo_path) }}" alt="{{ $store->name }} logo">
+                    @else
+                        <div class="w-full h-48 flex items-center justify-center bg-gray-200">
+                            <span class="text-gray-500">No Logo</span>
                         </div>
-                    </a>
+                    @endif
+                    <div class="p-6 flex-grow flex flex-col">
+                        <h4 class="font-bold text-xl mb-2">{{ $store->name }}</h4>
+                        <p class="text-gray-700 text-base mb-4 flex-grow">
+                            {{ $store->description ? Str::limit($store->description, 100) : 'No description provided.' }}
+                        </p>
+                        <div class="mt-auto">
+                            <a href="{{ route('customer.stores.show', $store) }}" class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center">
+                                View Store
+                            </a>
+                        </div>
+                    </div>
                 </div>
             @empty
                 <div class="col-span-full text-center text-gray-500">
