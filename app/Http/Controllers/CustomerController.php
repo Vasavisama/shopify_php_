@@ -17,7 +17,7 @@ class CustomerController extends Controller
 
     public function show(Store $store)
     {
-        $store->load('products');
+        $store->load('products', 'theme');
         return view('customer.stores.show', compact('store'));
     }
 }
