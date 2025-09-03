@@ -66,14 +66,7 @@
         <h4 class="text-gray-700 text-xl font-medium">Recent Stores</h4>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
             @forelse ($stores->take(3) as $store)
-                @php
-                    $theme = $store->theme;
-                    $bgColor = $theme ? $theme->background_color : '#ffffff';
-                    $fontColor = $theme ? $theme->font_color : '#000000';
-                    $fontStyle = $theme ? $theme->font_style : 'normal';
-                    $fontSize = $theme ? $theme->font_size . 'px' : '16px';
-                @endphp
-                <div class="rounded-lg shadow-lg overflow-hidden" style="background-color: {{ $bgColor }}; color: {{ $fontColor }}; font-family: {{ $fontStyle }}; font-size: {{ $fontSize }};">
+                <div class="rounded-lg shadow-lg overflow-hidden bg-white">
                     @if($store->logo_path)
                         <img class="w-full h-48 object-cover" src="{{ asset('storage/' . $store->logo_path) }}" alt="{{ $store->name }} logo">
                     @else
