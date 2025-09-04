@@ -50,7 +50,7 @@
         <div>
             <a href="{{ route('register') }}" class="button button-blue">Register</a>
             <a href="{{ route('login') }}" class="button button-green">Login</a>
-            <a href="{{ route('customer.stores.index') }}" class="button button-blue">View Stores</a>
+        
         </div>
     </div>
 </body>
