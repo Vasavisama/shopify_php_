@@ -45,25 +45,41 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="text-end mt-4">
-            <h3 class="fw-bold">Total Bill: ${{ number_format($total, 2) }}</h3>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addressModal">
-                Buy
-            </button>
-        </div>
 
-        <!-- Address Modal -->
-        <div class="modal fade" id="addressModal" tabindex="-1" aria-labelledby="addressModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addressModalLabel">Add Address</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="row mt-4">
+            <div class="col-md-6">
+                @if($addresses->isNotEmpty())
+                    @php
+                        $selectedAddressId = session('selected_address_id');
+                        $selectedAddress = $selectedAddressId ? $addresses->firstWhere('id', $selectedAddressId) : $addresses->first();
+                    @endphp
+                    <h5>Shipping Address:</h5>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $selectedAddress->name }} ({{ $selectedAddress->address_type }})</h5>
+                            <p class="card-text">
+                                {{ $selectedAddress->flat_no }}, {{ $selectedAddress->street }}, {{ $selectedAddress->landmark }}<br>
+                                {{ $selectedAddress->town }}, {{ $selectedAddress->state }} - {{ $selectedAddress->pincode }}<br>
+                                {{ $selectedAddress->country }}<br>
+                                Phone: {{ $selectedAddress->mobile_number }}
+                            </p>
+                            <a href="{{ route('customer.addresses.index') }}" class="btn btn-secondary">Change</a>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        @include('customer.address.create')
+                @else
+                    <div class="card">
+                        <div class="card-body">
+                            <p>No address selected. Please add or select an address.</p>
+                            <a href="{{ route('customer.addresses.index') }}" class="btn btn-primary">Add/Select Address</a>
+                        </div>
                     </div>
-                </div>
+                @endif
+            </div>
+            <div class="col-md-6 text-end">
+                <h3 class="fw-bold">Total Bill: ${{ number_format($total, 2) }}</h3>
+                <button type="button" class="btn btn-primary" @if($addresses->isEmpty() && !session()->has('selected_address_id')) disabled @endif>
+                    Proceed to Checkout
+                </button>
             </div>
         </div>
     @else
