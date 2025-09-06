@@ -44,7 +44,7 @@ Route::middleware(['auth:api', 'role:admin'])->prefix('admin')->name('admin.')->
     // Add other admin routes here
 });
 
-Route::middleware(['auth:api'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard/admin', function () {
         return view('dashboard.admin');
     })->middleware('role:admin')->name('dashboard.admin');
