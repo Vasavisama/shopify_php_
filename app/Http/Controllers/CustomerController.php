@@ -21,6 +21,11 @@ class CustomerController extends Controller
         return view('customer.stores.show', compact('store'));
     }
 
+    public function createAddress()
+    {
+        return view('customer.address.create');
+    }
+
     public function storeAddress(Request $request)
     {
         $request->validate([
@@ -50,5 +55,39 @@ class CustomerController extends Controller
         session(['selected_address_id' => $request->address_id]);
 
         return redirect()->route('cart.index')->with('success', 'Address selected successfully!');
+    }
+
+    public function addresses(Request $request)
+    {
+        $addresses = $request->user()->addresses;
+        return view('customer.address.index', compact('addresses'));
+    }
+
+    public function editAddress(Request $request, $addressId)
+    {
+        $address = $request->user()->addresses()->findOrFail($addressId);
+        return view('customer.address.edit', compact('address'));
+    }
+
+    public function updateAddress(Request $request, $addressId)
+    {
+        $address = $request->user()->addresses()->findOrFail($addressId);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'mobile_number' => 'required|string|max:15',
+            'street' => 'required|string|max:255',
+            'landmark' => 'required|string|max:255',
+            'town' => 'required|string|max:255',
+            'state' => 'required|string|max:255',
+            'country' => 'required|string|max:255',
+            'pincode' => 'required|string|max:10',
+            'flat_no' => 'required|string|max:255',
+            'address_type' => 'required|in:Home,Work',
+        ]);
+
+        $address->update($request->all());
+
+        return redirect()->route('customer.addresses.index')->with('success', 'Address updated successfully!');
     }
 }
