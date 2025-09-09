@@ -35,12 +35,12 @@ class AuthController extends Controller
                 'role' => $validated['role'],
             ]);
 
-            if ($user->role === 'user') {
-                $user->store()->create([
-                    'name' => $user->name . "'s Store",
-                    'domain' => str_replace(' ', '-', strtolower($user->name)) . '.example.com',
-                ]);
-            }
+            // if ($user->role === 'user') {
+            //     $user->store()->create([
+            //         'name' => $user->name . "'s Store",
+            //         'domain' => str_replace(' ', '-', strtolower($user->name)) . '.example.com',
+            //     ]);
+            // }
 
             $token = JWTAuth::fromUser($user);
             session(['jwt_token' => $token]);

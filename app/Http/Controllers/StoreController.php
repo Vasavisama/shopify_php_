@@ -45,7 +45,7 @@ class StoreController extends Controller
         if ($request->hasFile('logo')) {
             $validated['logo_path'] = $request->file('logo')->store('logos', 'public');
         }
-        $validated['user_id'] = auth()->id();
+        $validated['user_id'] = auth('api')->id();
 
         $store = Store::create($validated);
 

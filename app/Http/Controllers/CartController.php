@@ -18,7 +18,7 @@ class CartController extends Controller
             }
         }
 
-        $addresses = auth()->check() ? $request->user()->addresses : collect();
+        $addresses = auth('api')->check() ? $request->user()->addresses : collect();
         $selectedAddress = null;
         if (session()->has('selected_address_id')) {
             $selectedAddress = Address::find(session('selected_address_id'));
