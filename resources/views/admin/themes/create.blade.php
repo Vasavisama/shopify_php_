@@ -26,13 +26,7 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="background_color">
-                        Background Color
-                    </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('background_color') border-red-500 @enderror" id="background_color" name="background_color" type="color" value="{{ old('background_color', '#FFFFFF') }}">
-                </div>
-
+ 
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="font_color">
                         Font Color
